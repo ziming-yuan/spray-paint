@@ -5,8 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:src"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Spray Paint Application" Height="551" Width="928">
 
-    </Grid>
+
+    <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open" Click="OpenImage_Click"/>
+                <MenuItem Header="_Save" Click="SaveImage_Click"/>
+                <MenuItem Header="_Exit" Click="Exit_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Text="Select color and density, then use the mouse to spray paint on the canvas."/>
+            </StatusBarItem>
+        </StatusBar>
+
+        <ToolBar DockPanel.Dock="Top">
+            <Button Content="Spray" Click="SprayButton_Click"/>
+            <Separator/>
+            <Button Content="Erase" Click="EraseButton_Click"/>
+            <Separator/>
+            <Label Content="Color:"/>
+            <ComboBox x:Name="ColorPicker" SelectedIndex="0" Width="100" Height="20" SelectionChanged="ColorPicker_SelectionChanged">
+                <ComboBoxItem Background="Black" Height="20" Content="Black"/>
+                <ComboBoxItem Background="Red" Height="20" Content="Red"/>
+                <ComboBoxItem Background="Green" Height="20" Content="Green"/>
+                <ComboBoxItem Background="Blue" Height="20" Content="Blue"/>
+            </ComboBox>
+            <Label Content="Density:"/>
+            <Slider x:Name="DensitySlider" Minimum="0" Maximum="1" Value="0.5" Width="100" Height="20"/>
+        </ToolBar>
+
+        <Grid>
+            <Image x:Name="LoadedImage"/>
+            <Canvas x:Name="PaintCanvas" Background="Transparent" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseUp="Canvas_MouseUp">
+                <Ellipse x:Name="SprayIndicator" Width="20" Height="20" Fill="Black" Opacity="0.3" Visibility="Collapsed"/>
+            </Canvas>
+        </Grid>
+    </DockPanel>
 </Window>
