@@ -7,7 +7,6 @@
         mc:Ignorable="d"
         Title="Spray Paint Application" Height="551" Width="928">
 
-
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -40,10 +39,8 @@
         </ToolBar>
 
         <Grid>
-            <Image x:Name="LoadedImage"/>
-            <Canvas x:Name="PaintCanvas" Background="Transparent" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseUp="Canvas_MouseUp">
-                <Ellipse x:Name="SprayIndicator" Width="20" Height="20" Fill="Black" Opacity="0.3" Visibility="Collapsed"/>
-            </Canvas>
+            <Image x:Name="LoadedImage" />
+            <Canvas x:Name="PaintCanvas" Background="Transparent" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseUp="Canvas_MouseUp"/>
         </Grid>
     </DockPanel>
 </Window>

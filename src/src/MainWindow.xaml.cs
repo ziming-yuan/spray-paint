@@ -25,16 +25,6 @@ namespace src
         public MainWindow()
         {
             InitializeComponent();
-            SprayIndicator.Fill = new SolidColorBrush(selectedColor);
-        }
-        private void MoveSprayIndicator(Point position)
-        {
-            // Adjust the position to center the indicator on the mouse position
-            double left = position.X - (SprayIndicator.Width / 2);
-            double top = position.Y - (SprayIndicator.Height / 2);
-
-            Canvas.SetLeft(SprayIndicator, left);
-            Canvas.SetTop(SprayIndicator, top);
         }
 
         private void DrawOnCanvas(Point position, bool isErasing)
@@ -43,7 +33,7 @@ namespace src
             {
                 return; // Exit the method if no image is loaded
             }
-            int radius = 1; // Size of the spray area
+            int radius = 10; // Size of the spray area
             int density = 100; // Density of the spray
 
             writableImage.Lock(); // Lock the bitmap for writing.
@@ -65,9 +55,7 @@ namespace src
                 {
                     // Determine the color
                     Color color = isErasing ? Colors.Transparent : selectedColor;
-                    int colorData = color.R << 16; // R
-                    colorData |= color.G << 8;     // G
-                    colorData |= color.B << 0;     // B
+                    int colorData = (color.A << 24) | (color.R << 16) | (color.G << 8) | color.B;
 
                     // Apply the color to the pixel
                     writableImage.WritePixels(new Int32Rect(x, y, 1, 1), new[] { colorData }, 4, 0);
@@ -88,10 +76,13 @@ namespace src
             {
                 BitmapImage bitmap = new BitmapImage(new Uri(openFileDialog.FileName));
                 writableImage = new WriteableBitmap(bitmap);
-                LoadedImage.Source = writableImage; // Display the image in the Image control
-                                                    // Set the size of the Canvas to match the image
+                LoadedImage.Source = writableImage;
+                LoadedImage.VerticalAlignment = VerticalAlignment.Center;
+                LoadedImage.HorizontalAlignment = HorizontalAlignment.Center;
                 PaintCanvas.Width = writableImage.Width;
                 PaintCanvas.Height = writableImage.Height;
+                PaintCanvas.VerticalAlignment = VerticalAlignment.Center;
+                PaintCanvas.HorizontalAlignment = HorizontalAlignment.Center;
             }
         }
 
@@ -138,9 +129,6 @@ namespace src
 
                 if (isSprayPainting || isErasing)
                 {
-                    // Show the spray indicator
-                    SprayIndicator.Visibility = Visibility.Visible;
-                    MoveSprayIndicator(position);
                     DrawOnCanvas(position, isErasing);
                 }
             }
@@ -152,7 +140,6 @@ namespace src
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 Point position = e.GetPosition(PaintCanvas);
-                MoveSprayIndicator(position);
 
                 if (isSprayPainting)
                 {
@@ -167,7 +154,6 @@ namespace src
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
             PaintCanvas.ReleaseMouseCapture();
-            SprayIndicator.Visibility = Visibility.Collapsed;
         }
 
         private void ColorPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -180,8 +166,7 @@ namespace src
 
         private void DensitySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            // Assuming the slider's value is already between 0 (transparent) and 1 (opaque)
-            // If your slider's range is different, you need to adjust the range accordingly.
+            // Slider's value is between 0 (transparent) and 1 (opaque)
             sprayOpacity = (int)(e.NewValue * 255); // Convert to a scale of 0-255
         }
 
@@ -190,8 +175,6 @@ namespace src
             if (ColorPicker.SelectedItem is ComboBoxItem comboBoxItem && comboBoxItem.Background is SolidColorBrush brush)
             {
                 selectedColor = brush.Color;
-                // Update the spray indicator color
-                SprayIndicator.Fill = new SolidColorBrush(selectedColor) { Opacity = 0.3 };
                 selectedColor.A = (byte)sprayOpacity; // Set the alpha channel for the color
             }
         }
