@@ -35,12 +35,12 @@
                 <ComboBoxItem Background="Blue" Height="20" Content="Blue"/>
             </ComboBox>
             <Label Content="Density:"/>
-            <Slider x:Name="DensitySlider" Minimum="0" Maximum="1" Value="0.5" Width="100" Height="20"/>
+            <Slider x:Name="DensitySlider" Minimum="0" Maximum="1" Value="0.5" Width="100" Height="20" ValueChanged="DensitySlider_ValueChanged"/>
         </ToolBar>
 
         <Grid>
-            <Image x:Name="LoadedImage" />
-            <Canvas x:Name="PaintCanvas" Background="Transparent" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseUp="Canvas_MouseUp"/>
+            <Image x:Name="LoadedImage" Stretch="Uniform"/>
+            <Canvas x:Name="PaintCanvas" Panel.ZIndex="1" Background="Transparent" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" MouseUp="Canvas_MouseUp"/>
         </Grid>
     </DockPanel>
 </Window>

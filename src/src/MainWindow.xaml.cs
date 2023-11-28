@@ -20,7 +20,7 @@ namespace src
         private bool isErasing = false;
         private Color selectedColor = Colors.Black;
         private Random random = new Random();
-        private int sprayOpacity;
+        private int sprayOpacity = 50;
 
         public MainWindow()
         {
@@ -33,8 +33,12 @@ namespace src
             {
                 return; // Exit the method if no image is loaded
             }
+            // mapping from canvas to bitmap
+            position.X = position.X / PaintCanvas.Width * writableImage.PixelWidth;
+            position.Y = position.Y / PaintCanvas.Height * writableImage.PixelHeight;
+
             int radius = 10; // Size of the spray area
-            int density = 100; // Density of the spray
+            int density = sprayOpacity; // Density of the spray
 
             writableImage.Lock(); // Lock the bitmap for writing.
 
@@ -77,12 +81,14 @@ namespace src
                 BitmapImage bitmap = new BitmapImage(new Uri(openFileDialog.FileName));
                 writableImage = new WriteableBitmap(bitmap);
                 LoadedImage.Source = writableImage;
+                LoadedImage.Width = writableImage.PixelWidth;
+                LoadedImage.Height = writableImage.PixelHeight;
                 LoadedImage.VerticalAlignment = VerticalAlignment.Center;
                 LoadedImage.HorizontalAlignment = HorizontalAlignment.Center;
-                PaintCanvas.Width = writableImage.Width;
-                PaintCanvas.Height = writableImage.Height;
+                 PaintCanvas.Width = writableImage.PixelWidth;
+                PaintCanvas.Height = writableImage.PixelHeight;
                 PaintCanvas.VerticalAlignment = VerticalAlignment.Center;
-                PaintCanvas.HorizontalAlignment = HorizontalAlignment.Center;
+                PaintCanvas.HorizontalAlignment = HorizontalAlignment.Center;  
             }
         }
 
@@ -167,7 +173,7 @@ namespace src
         private void DensitySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             // Slider's value is between 0 (transparent) and 1 (opaque)
-            sprayOpacity = (int)(e.NewValue * 255); // Convert to a scale of 0-255
+            sprayOpacity = (int)(e.NewValue * 100); // Convert to a scale of 0-100
         }
 
         private void ColorPicker_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
