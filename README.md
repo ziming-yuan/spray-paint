@@ -12,4 +12,3 @@
 * [WPF in Visual Studio](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/getting-started/walkthrough-my-first-wpf-desktop-application?view=netframeworkdesktop-4.8)
 * [C# GUI using WPF](https://www.youtube.com/watch?v=oSeYvMEH7jc&t=270s&ab_channel=tutorialsEU)
 * [Foundational C#](https://www.freecodecamp.org/learn/foundational-c-sharp-with-microsoft/)
-* For some bugs, I asked ChatGPT and Copilot.
