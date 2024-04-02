@@ -1,4 +1,4 @@
-# Spray Paint .NET WPF Assignment
+# Testing Spray Paint .NET WPF
 
 ### Incomplete steps:
 * Allow users to save the changes and open the image again to edit and update the spray.
